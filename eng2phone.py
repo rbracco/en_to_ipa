@@ -1,8 +1,8 @@
 import string
 
 from config import PERMITTED_PUNCTUATION
-from phone_mappings import arpa_to_ipa_dict
-from phone_dict import cmu_dict, warn_missing_word
+from arpa_ipa_mappings import arpa_to_ipa_dict
+from build_phone_dict import cmu_dict, warn_missing_word
 
 
 def arpa_to_ipa(arpa_list):

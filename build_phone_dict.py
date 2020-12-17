@@ -22,7 +22,7 @@ def warn_missing_word(word):
             f.write(word + "\n")
 
 
-def get_oov_pronunciations(cmu_dict):
+def get_oov_pronunciations():
     oov_dict = read_json("data/oov_dict.json")
     # There's a bug where T'S is translated as TS but should be T S
     oov_dict = {k: v.replace("TS", "T S") for k, v in oov_dict.items()}
