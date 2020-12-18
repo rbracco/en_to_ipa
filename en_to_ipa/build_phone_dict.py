@@ -25,7 +25,7 @@ def warn_missing_word(word):
 def get_oov_pronunciations():
     oov_dict = read_json(PATH_OOV_DICT)
     # There's a bug where T'S is translated as TS but should be T S
-    oov_dict = {k: v.replace("TS", "T S") for k, v in oov_dict.items()}
+    oov_dict = {k: [v.replace("TS", "T S").split(" ")] for k, v in oov_dict.items()}
     return oov_dict
 
 
@@ -33,6 +33,7 @@ def load_cmu_dict():
     cmu_dict = cmudict.dict()
     oov_dict = get_oov_pronunciations()
     cmu_dict.update(oov_dict)
+    cmu_dict = {k.lower(): v for k, v in cmu_dict.items()}
     return cmu_dict
 
 
