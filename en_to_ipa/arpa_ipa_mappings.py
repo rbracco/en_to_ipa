@@ -1,4 +1,4 @@
-from config import REPLACE_DIPHTHONGS
+from .config import REPLACE_DIPHTHONGS
 
 vowel_maps = {
     "aa": "ɑ",
