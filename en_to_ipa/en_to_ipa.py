@@ -25,7 +25,6 @@ def convert_word_to_phones(word, ipa=True):
     if not results:
         warn_missing_word(word)
         return ""
-
     arpa_list = _clean_results(results[0])
     # if ipa, convert arpa to ipa, otherwise remove spaces from the word
     return arpa_to_ipa(arpa_list) if ipa else arpa_list
@@ -33,8 +32,7 @@ def convert_word_to_phones(word, ipa=True):
 
 def arpa_to_ipa(arpa_list):
     """Convert a single word from ARPA to Intenational Phonetic Alphabet"""
-    out = [arpa_to_ipa_dict[arpa] for arpa in arpa_list]
-    return out
+    return [arpa_to_ipa_dict[arpa] for arpa in arpa_list]
 
 
 def _clean_results(results):
@@ -44,13 +42,12 @@ def _clean_results(results):
 def _clean_result(result):
     """Strip comments, lowercase, extra whitespace, and numbers"""
     result = result.split("#")[0].strip().lower()
-    # remove 0/1/2/3 representing lexical stress and standalone numbers
     return _strip_nums(result)
 
 
 def _clean_label(label, permitted_punctuation):
     label = _strip_nums(label)
-    label = _strip_pronunciation(label, permitted_punctuation)
+    label = _strip_punctuation(label, permitted_punctuation)
     label = _remove_multiple_spaces(label)
     return label.strip()
 
@@ -59,7 +56,10 @@ def _strip_nums(s):
     return "".join([t for t in s if not t.isdigit()])
 
 
-def _strip_pronunciation(s, permitted_punctuation=None):
+
+def _strip_punctuation(s, permitted_punctuation=None):
+
+
     all_punc = set(string.punctuation)
     allowed = set(permitted_punctuation) if permitted_punctuation is not None else set()
     exclude = all_punc - allowed
