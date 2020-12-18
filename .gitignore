@@ -1,3 +1,4 @@
 .vscode
 *.egg-info
 */__pycache__
+en_to_ipa/data/oov_new.txt
