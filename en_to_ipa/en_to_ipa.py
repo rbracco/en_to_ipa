@@ -45,9 +45,31 @@ def _clean_result(result):
     return _strip_nums(result)
 
 
-def _clean_label(label, permitted_punctuation):
+def _strip_punctuation(s, permitted_punctuation=None, trim_permitted=True):
+    """Remove punctuation from a string while leaving permitted_punctuation
+
+    Removes all chars from string.punctuation from the string.
+    Args:
+    s: str - string to be cleaned
+    permitted_punctuation: list - a list of puncutation to not be removed
+    trim_permitted: bool - True if you want to strip the chars in permitted_
+    punctuation from the margins. For instance '-' may be permitted between words
+    but may need to be stripped from the start or end of the label
+    """
+
+    all_punc = set(string.punctuation)
+    allowed = set(permitted_punctuation) if permitted_punctuation is not None else set()
+    exclude = all_punc - allowed
+
+    out = "".join(c for c in s if c not in exclude)
+    if trim_permitted:
+        out = out.strip("".join(allowed))
+    return out
+
+
+def _clean_label(label, permitted_punctuation, trim_permitted=True):
     label = _strip_nums(label)
-    label = _strip_punctuation(label, permitted_punctuation)
+    label = _strip_punctuation(label, permitted_punctuation, trim_permitted)
     label = _remove_multiple_spaces(label)
     return label.strip()
 
@@ -56,15 +78,5 @@ def _strip_nums(s):
     return "".join([t for t in s if not t.isdigit()])
 
 
-
-def _strip_punctuation(s, permitted_punctuation=None):
-
-
-    all_punc = set(string.punctuation)
-    allowed = set(permitted_punctuation) if permitted_punctuation is not None else set()
-    exclude = all_punc - allowed
-    return "".join(c for c in s if c not in exclude)
-
-
 def _remove_multiple_spaces(s):
-    return " ".join(s.split())
+    return " ".join(s.strip().split())
