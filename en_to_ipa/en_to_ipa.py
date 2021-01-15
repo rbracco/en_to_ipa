@@ -2,32 +2,35 @@ import string
 
 from .config import PERMITTED_PUNCTUATION
 from .arpa_ipa_mappings import arpa_to_ipa_dict
-from .build_phone_dict import cmu_dict, warn_missing_word
+from .build_phone_dict import cmu_dict, warn_missing_word, add_word_to_oov_file
 
 __all__ = ["convert_label_to_phones", "convert_word_to_phones", "arpa_to_ipa"]
 
 
-def convert_label_to_phones(label, ipa=True, keep_spaces=True, as_list=True, raise_oov_error=True):
+def convert_label_to_phones(
+    label, ipa=True, keep_spaces=True, as_list=True, raise_oov=True, warn_oov=True
+):
     """Convert an entire label from graphemes to phonemes(IPA)"""
     phones = []
     label = _clean_label(label, permitted_punctuation=PERMITTED_PUNCTUATION)
     for word in label.split(" "):
-        phones.extend(convert_word_to_phones(word, ipa, raise_oov_error))
+        phones.extend(convert_word_to_phones(word, ipa, raise_oov, warn_oov))
         if keep_spaces:
             phones.extend(" ")
     phones = phones[:-1] if keep_spaces else phones
     return phones if as_list else "".join(phones)
 
 
-def convert_word_to_phones(word, ipa=True, raise_oov_error=True):
+def convert_word_to_phones(word, ipa=True, raise_oov=True, warn_oov=True):
     """Convert a word from graphemes to phonemes(IPA)"""
     results = cmu_dict.get(word.lower(), "")
     if not results:
-        if raise_oov_error:
-            raise ValueError(f"{word} not found in vocabulary")
-        else:
+        add_word_to_oov_file(word)
+        if warn_oov:
             warn_missing_word(word)
-            return ""
+        if raise_oov:
+            raise ValueError(f"{word} not found in vocabulary")
+        return ""
     arpa_list = _clean_results(results[0])
     # if ipa, convert arpa to ipa, otherwise remove spaces from the word
     return arpa_to_ipa(arpa_list) if ipa else arpa_list

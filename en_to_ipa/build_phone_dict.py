@@ -16,6 +16,9 @@ def write_json(fname, obj, encoding="utf-8"):
 
 def warn_missing_word(word):
     warnings.warn(f"'{word}' not found in cmudict")
+
+
+def add_word_to_oov_file(word):
     with open(PATH_OOV_NEW, "r+") as f:
         words = [line.strip() for line in f]
         if word not in words:
