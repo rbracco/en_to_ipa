@@ -2,7 +2,7 @@ import string
 
 from .config import PERMITTED_PUNCTUATION
 from .arpa_ipa_mappings import arpa_to_ipa_dict
-from .build_phone_dict import cmu_dict, warn_missing_word, add_word_to_oov_file
+from .build_phone_dict import cmu_dict, cmu_dict_plus, warn_missing_word, add_word_to_oov_file
 
 __all__ = ["convert_label_to_phones", "convert_word_to_phones", "arpa_to_ipa"]
 

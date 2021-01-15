@@ -4,17 +4,24 @@ from en_to_ipa.build_phone_dict import load_cmu_dict
 
 @pytest.fixture(scope="session")
 def local_cmu_dict():
-    return load_cmu_dict()
+    cmu_dict, _ = load_cmu_dict()
+    return cmu_dict
+
+
+@pytest.fixture(scope="session")
+def local_cmu_dict_plus():
+    _, cmu_dict_plus = load_cmu_dict()
+    return cmu_dict_plus
 
 
 def test_dict_loads(local_cmu_dict):
     assert len(local_cmu_dict.items()) > 5000
 
 
-def test_oov_dict_loads(local_cmu_dict):
-    print(local_cmu_dict.get("fashionitis", ""))
-    assert local_cmu_dict.get("fashionitis", "")
-    assert local_cmu_dict.get("invitingly", "")
+def test_oov_dict_loads(local_cmu_dict_plus):
+    print("TYPE", type(local_cmu_dict_plus))
+    assert local_cmu_dict_plus.get("fashionitis", "")
+    assert local_cmu_dict_plus.get("invitingly", "")
 
 
 def test_common_word_found(local_cmu_dict):

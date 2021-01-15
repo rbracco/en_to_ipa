@@ -35,9 +35,9 @@ def get_oov_pronunciations():
 def load_cmu_dict():
     cmu_dict = cmudict.dict()
     oov_dict = get_oov_pronunciations()
-    cmu_dict.update(oov_dict)
-    cmu_dict = {k.lower(): v for k, v in cmu_dict.items()}
-    return cmu_dict
+    cmu_dict_plus = {**cmu_dict, **oov_dict}
+    cmu_dict_plus = {k.lower(): v for k, v in cmu_dict_plus.items()}
+    return cmu_dict, cmu_dict_plus
 
 
-cmu_dict = load_cmu_dict()
+cmu_dict, cmu_dict_plus = load_cmu_dict()
