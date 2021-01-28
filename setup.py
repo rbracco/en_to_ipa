@@ -9,6 +9,7 @@ setup(
     author_email="robertbracco1@gmail.com",
     license="BSD 2-clause",
     packages=find_packages(include=["en_to_ipa"]),
+    install_requires=["cmudict"],
     classifiers=[
         "Development Status :: 1 - Planning",
         "Intended Audience :: Science/Research",

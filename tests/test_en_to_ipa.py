@@ -1,6 +1,5 @@
 import pytest
 import en_to_ipa
-from en_to_ipa import convert_label_to_phones
 
 
 def test_clean_result():
