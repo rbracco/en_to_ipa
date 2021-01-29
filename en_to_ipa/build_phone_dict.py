@@ -41,3 +41,4 @@ def load_cmu_dict():
 
 
 cmu_dict, cmu_dict_plus = load_cmu_dict()
+cmu_dict_keys = cmu_dict.keys()

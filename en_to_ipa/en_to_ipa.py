@@ -2,7 +2,13 @@ import string
 
 from .config import PERMITTED_PUNCTUATION
 from .arpa_ipa_mappings import arpa_to_ipa_dict
-from .build_phone_dict import cmu_dict, cmu_dict_plus, warn_missing_word, add_word_to_oov_file
+from .build_phone_dict import (
+    cmu_dict,
+    cmu_dict_plus,
+    cmu_dict_keys,
+    warn_missing_word,
+    add_word_to_oov_file,
+)
 
 __all__ = ["convert_label_to_phones", "convert_word_to_phones", "arpa_to_ipa"]
 
@@ -19,6 +25,11 @@ def convert_label_to_phones(
             phones.extend(" ")
     phones = phones[:-1] if keep_spaces else phones
     return phones if as_list else "".join(phones)
+
+
+def is_label_convertible(label):
+    words = [word.lower() for word in label.split(" ")]
+    return all([word in cmu_dict_keys for word in words])
 
 
 def convert_word_to_phones(word, ipa=True, raise_oov=True, warn_oov=True):
