@@ -28,7 +28,8 @@ def convert_label_to_phones(
 
 
 def is_label_convertible(label):
-    words = [word.lower() for word in label.split(" ")]
+    clean_label = _clean_label(label, permitted_punctuation=PERMITTED_PUNCTUATION)
+    words = [word.lower() for word in clean_label.split(" ")]
     return all([word in cmu_dict_keys for word in words])
 
 
