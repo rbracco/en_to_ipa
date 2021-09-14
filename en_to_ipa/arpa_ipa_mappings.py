@@ -6,8 +6,9 @@ vowel_maps = {
     "ah": "ʌ",
     "ao": "ɔ",
     "aw": "ɑʊ" if REPLACE_DIPHTHONGS else "aʊ",
+    # note this is originally a schwa but we started using only ʌ
     "ax": "ə",
-    "axr": "ɚ",
+    "axr": "ʌɹ" if REPLACE_DIPHTHONGS else "ɚ",
     "ay": "ɑɪ" if REPLACE_DIPHTHONGS else "aɪ",
     "eh": "ɛ",
     "er": "ʌɹ" if REPLACE_DIPHTHONGS else "ɝ",
@@ -62,7 +63,8 @@ cons_maps = {
 
 # these are maps that only timit uses, not arpanet
 timit_specific_maps = {
-    "ax-h": "ə",
+    # note this is originally a schwa but we started using ʌ
+    "ax-h": "ʌ",
     "bcl": "b",
     "dcl": "d",
     "eng": "ŋ",
