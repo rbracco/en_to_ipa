@@ -4,3 +4,4 @@
 Pipfile
 pyproject.toml
 .venv/
+.hypothesis/

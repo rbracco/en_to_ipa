@@ -1,22 +1,42 @@
+import string
+
 import pytest
+from hypothesis import given
+from hypothesis.strategies import text
 
 import en_to_ipa.en_to_ipa as en_to_ipa
 
 
-def test_clean_result_removes_num():
-    assert en_to_ipa._clean_result("AY0 B") == "ay b"
+def test_strip_punctuation():
+    pass
 
 
-def test_clean_result_strips_whitespace():
-    assert en_to_ipa._clean_result("   AY B   \n") == "ay b"
+@given(text())
+def test_remove_multiple_spaces_hypothesis(s):
+    # Add a bunch of multispaces in addition to what might already be in s
+    s = s + "  " + s + "      " + s
+    assert "  " not in en_to_ipa._remove_multiple_spaces(s)
 
 
-def test_clean_result_removes_comment():
-    assert en_to_ipa._clean_result("AY0 B#This is a comment") == "ay b"
+def test_remove_multiple_spaces_fixed():
+    multispace = "Hello, this 1  is a sentence    with  multiple spaces."
+    single_space = "Hello, this 1 is a sentence with multiple spaces."
+    assert en_to_ipa._remove_multiple_spaces(multispace) == single_space
 
 
-def test_clean_result_cleans_all():
-    assert en_to_ipa._clean_result("  AY0 B #This is a comment\n") == "ay b"
+@given(text().filter(lambda x: any([c.isdigit() for c in x])))
+def test_remove_nums(s):
+    """Starting with text containing digits, ensure all digits are stripped out"""
+    stripped = set(en_to_ipa._remove_nums(s))
+    assert set(string.digits).intersection(stripped) == set()
+
+
+def test_clean_arpa_list_removes_nums():
+    assert en_to_ipa._clean_arpa_list(["AY0", "B1"]) == ["ay", "b"]
+
+
+def test_clean_arpa_list_strips_whitespace():
+    assert en_to_ipa._clean_arpa_list([" AY0   ", "B1\n"]) == ["ay", "b"]
 
 
 def test_label_convertible_with_caps():
