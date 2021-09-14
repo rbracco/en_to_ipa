@@ -1,14 +1,14 @@
 from typing import List
 
 import en_to_ipa.utils as utils
-
-from .arpa_ipa_mappings import arpa_to_ipa_dict
-from .build_phone_dict import (
+from en_to_ipa.arpa_ipa_mappings import arpa_to_ipa_dict
+from en_to_ipa.build_phone_dict import (
     add_word_to_oov_file,
     cmu_dict,
     cmu_dict_keys,
     warn_missing_word,
 )
+
 from .config import PERMITTED_PUNCTUATION
 
 __all__ = ["convert_label_to_phones", "arpa_to_ipa", "is_label_convertible"]
