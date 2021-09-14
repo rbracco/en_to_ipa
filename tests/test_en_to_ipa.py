@@ -47,6 +47,10 @@ def test_is_label_convertible_fails_misspelling():
     assert not en_to_ipa.is_label_convertible("Heello")
 
 
+def test_all_cmudict_keys_are_convertible():
+    assert all([en_to_ipa.is_label_convertible(k)] for k in en_to_ipa.cmu_dict_keys)
+
+
 def test_convert_label_to_arpa_list1():
     zebra = en_to_ipa.convert_label_to_phones("Zebra", ipa=False, as_list=True)
     assert zebra == ["z", "iy", "b", "r", "ah"]
