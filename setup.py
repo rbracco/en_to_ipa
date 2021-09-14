@@ -1,4 +1,9 @@
-from setuptools import setup, find_packages
+import site
+import sys
+
+from setuptools import find_packages, setup
+
+site.ENABLE_USER_SITE = "--user" in sys.argv[1:]
 
 setup(
     name="en_to_ipa",
