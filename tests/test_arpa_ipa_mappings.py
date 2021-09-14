@@ -1,10 +1,11 @@
 import pytest
-import en_to_ipa.arpa_ipa_mappings
+
+import en_to_ipa.arpa_ipa_mappings as mappings
 
 
 @pytest.fixture(scope="session")
 def arpa_to_ipa_dict():
-    return en_to_ipa.arpa_ipa_mappings.arpa_to_ipa_dict
+    return mappings.arpa_to_ipa_dict
 
 
 def test_dict_loads(arpa_to_ipa_dict):
