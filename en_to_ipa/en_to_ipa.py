@@ -1,16 +1,15 @@
 import string
 
-from .config import PERMITTED_PUNCTUATION
 from .arpa_ipa_mappings import arpa_to_ipa_dict
 from .build_phone_dict import (
+    add_word_to_oov_file,
     cmu_dict,
-    cmu_dict_plus,
     cmu_dict_keys,
     warn_missing_word,
-    add_word_to_oov_file,
 )
+from .config import PERMITTED_PUNCTUATION
 
-__all__ = ["convert_label_to_phones", "convert_word_to_phones", "arpa_to_ipa"]
+__all__ = ["convert_label_to_phones", "arpa_to_ipa"]
 
 
 def convert_label_to_phones(
@@ -20,7 +19,7 @@ def convert_label_to_phones(
     phones = []
     label = _clean_label(label, permitted_punctuation=PERMITTED_PUNCTUATION)
     for word in label.split(" "):
-        phones.extend(convert_word_to_phones(word, ipa, raise_oov, warn_oov))
+        phones.extend(_convert_word_to_phones(word, ipa, raise_oov, warn_oov))
         if keep_spaces:
             phones.extend(" ")
     phones = phones[:-1] if keep_spaces else phones
@@ -33,8 +32,20 @@ def is_label_convertible(label):
     return all([word in cmu_dict_keys for word in words])
 
 
-def convert_word_to_phones(word, ipa=True, raise_oov=True, warn_oov=True):
-    """Convert a word from graphemes to phonemes(IPA)"""
+def _convert_word_to_phones(
+    word: str,
+    ipa: bool = True,
+    raise_oov: bool = True,
+    warn_oov: bool = True,
+):
+    """Internal method for converting a word from graphemes to IPA or ARPA\
+
+    Args:
+    word: str - The English word to be converted
+    ipa: bool - If true convert to IPA, else convert to ARPA
+    raise_oov: bool - If true raise an error if the word isn't found in CMUDict, if False ignore
+    warn_oov: bool - If true issue a warnings.Warning if the word isn't found in CMUDict
+    """
     results = cmu_dict.get(word.lower(), "")
     if not results:
         add_word_to_oov_file(word)
@@ -43,8 +54,10 @@ def convert_word_to_phones(word, ipa=True, raise_oov=True, warn_oov=True):
         if raise_oov:
             raise ValueError(f"{word} not found in vocabulary")
         return ""
+    # TODO: Find a way to handle returning multiple values, keep in mind this
+    #       is a helper to convert_label_to_phones and a label may have multiple
+    #       words with multiple pronunciations
     arpa_list = _clean_results(results[0])
-    # if ipa, convert arpa to ipa, otherwise remove spaces from the word
     return arpa_to_ipa(arpa_list) if ipa else arpa_list
 
 
@@ -86,7 +99,7 @@ def _strip_punctuation(s, permitted_punctuation=None, trim_permitted=True):
 
 
 def _clean_label(label, permitted_punctuation, trim_permitted=True):
-    label = _strip_nums(label)
+    # label = _strip_nums(label)
     label = _strip_punctuation(label, permitted_punctuation, trim_permitted)
     label = _remove_multiple_spaces(label)
     return label.strip()
