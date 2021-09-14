@@ -47,14 +47,50 @@ def test_is_label_convertible_fails_misspelling():
     assert not en_to_ipa.is_label_convertible("Heello")
 
 
-# def test_convert_word_to_arpa():
-#     zebra = en_to_ipa.convert_word_to_phones("Zebra", ipa=False)
-#     # assert zebra == ["z", "iy", "b", "r", "ah"]
+def test_convert_label_to_arpa_list1():
+    zebra = en_to_ipa.convert_label_to_phones("Zebra", ipa=False, as_list=True)
+    assert zebra == ["z", "iy", "b", "r", "ah"]
+
+
+def test_convert_label_to_arpa_list2():
+    muffins = en_to_ipa.convert_label_to_phones("MuFFins", ipa=False, as_list=True)
+    assert muffins == ["m", "ah", "f", "ah", "n", "z"]
+
+
+def test_convert_label_to_arpa_str1():
+    ghosts = en_to_ipa.convert_label_to_phones("ghosts", ipa=False, as_list=False)
+    assert ghosts == "gowsts"
+    # assert zebra == ["z", "iy", "b", "r", "ah"]
+
+
+def test_convert_label_to_arpa_str2():
+    defendant = en_to_ipa.convert_label_to_phones("defendant", ipa=False, as_list=False)
+    assert defendant == "dihfehndahnt"
+
+
+def test_convert_label_to_ipa_list1():
+    airpower = en_to_ipa.convert_label_to_phones("airpower", ipa=True, as_list=True)
+    assert airpower == ["ɛ", "ɹ", "p", "ɑʊ", "ʌɹ"]
+
+
+def test_convert_label_to_ipa_list2():
+    russians = en_to_ipa.convert_label_to_phones("russians", ipa=True, as_list=True)
+    assert russians == ["ɹ", "ʌ", "ʃ", "ʌ", "n", "z"]
+
+
+def test_convert_label_to_ipa_str1():
+    tinderbox = en_to_ipa.convert_label_to_phones("tinderbox", ipa=True, as_list=False)
+    assert tinderbox == "tɪndʌɹbɑks"
+
+
+def test_convert_label_to_ipa_str2():
+    sneaky = en_to_ipa.convert_label_to_phones("sneaky", ipa=True, as_list=False)
+    assert sneaky == "sniki"
 
 
 @pytest.mark.xfail(raises=ValueError)
 def test_oov_word_raises():
-    en_to_ipa.convert_word_to_phones("ksdfklsdfklksdfksdf", warn_oov=False)
+    en_to_ipa._convert_word_to_phones("ksdfklsdfklksdfksdf", warn_oov=False)
 
 
 @pytest.mark.xfail(raises=ValueError)
