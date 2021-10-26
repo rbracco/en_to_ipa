@@ -77,5 +77,5 @@ def _convert_word_to_phones(
 
 
 def arpa_to_ipa(arpa_list: List[str]):
-    """Convert a single word from ARPA to Intenational Phonetic Alphabet"""
+    """Convert a single word from ARPA to International Phonetic Alphabet"""
     return [arpa_to_ipa_dict[arpa] for arpa in arpa_list if arpa != ""]

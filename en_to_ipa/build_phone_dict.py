@@ -1,6 +1,6 @@
 import json
 
-from .config import PATH_CMU_DICT, PATH_OOV_DICT, PATH_OOV_NEW
+from .config import PATH_CMU_DICT, PATH_CMU_POS, PATH_OOV_DICT, PATH_OOV_NEW
 
 
 def read_json(fname, encoding="utf-8"):
@@ -27,8 +27,16 @@ def get_oov_pronunciations():
     return oov_dict
 
 
+def get_cmu_pos():
+    cmu_pos = read_json(PATH_CMU_POS)
+    cmu_pos = {k: [v["default"]] for k, v in cmu_pos.items()}
+    return cmu_pos
+
+
 def load_cmu_dict():
     cmu_dict = read_json(PATH_CMU_DICT)
+    cmu_pos_dict = get_cmu_pos()
+    cmu_dict = {**cmu_dict, **cmu_pos_dict}
     oov_dict = get_oov_pronunciations()
     cmu_dict_plus = {**cmu_dict, **oov_dict}
     cmu_dict_plus = {k.lower(): v for k, v in cmu_dict_plus.items()}

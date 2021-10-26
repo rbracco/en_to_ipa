@@ -58,7 +58,7 @@ def test_convert_label_to_arpa_str2():
 
 def test_convert_label_to_ipa_list1():
     airpower = en_to_ipa.convert_label_to_phones("airpower", ipa=True, as_list=True)
-    assert airpower == ["ɛ", "ɹ", "p", "ɑʊ", "ʌɹ"]
+    assert airpower == ["ɛɪ", "ɹ", "p", "ɑʊ", "ʌɹ"]
 
 
 def test_convert_label_to_ipa_list2():
@@ -74,6 +74,21 @@ def test_convert_label_to_ipa_str1():
 def test_convert_label_to_ipa_str2():
     sneaky = en_to_ipa.convert_label_to_phones("sneaky", ipa=True, as_list=False)
     assert sneaky == "sniki"
+
+
+def test_no_regression_nauseating():
+    nauseating = en_to_ipa.convert_label_to_phones("nauseating", ipa=False, as_list=True)
+    assert nauseating == ["n", "ao", "z", "iy", "ey", "t", "ih", "ng"]
+
+
+def test_no_regression_beer():
+    beer = en_to_ipa.convert_label_to_phones("beer", ipa=False, as_list=True)
+    assert beer == ["b", "iy", "r"]
+
+
+def test_no_regression_and():
+    and_arpa = en_to_ipa.convert_label_to_phones("and", ipa=False, as_list=True)
+    assert and_arpa == ["ae", "n", "d"]
 
 
 @pytest.mark.xfail(raises=ValueError)
