@@ -6,3 +6,4 @@ pyproject.toml
 .venv/
 .hypothesis/
 en_to_ipa/data/cmu_dict.json
+.dvc
