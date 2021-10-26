@@ -1,0 +1,4 @@
+outs:
+- md5: 11878d50098af7a0ff6fc14ce3e55a36
+  size: 6997186
+  path: cmu_dict.json
