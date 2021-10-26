@@ -1,13 +1,9 @@
+import warnings
 from typing import List
 
 import en_to_ipa.utils as utils
 from en_to_ipa.arpa_ipa_mappings import arpa_to_ipa_dict
-from en_to_ipa.build_phone_dict import (
-    add_word_to_oov_file,
-    cmu_dict,
-    cmu_dict_keys,
-    warn_missing_word,
-)
+from en_to_ipa.build_phone_dict import add_word_to_oov_file, cmu_dict, cmu_dict_keys
 
 from .config import PERMITTED_PUNCTUATION
 
@@ -55,7 +51,7 @@ def _convert_word_to_phones(
     raise_oov: bool = True,
     warn_oov: bool = True,
 ):
-    """Internal method for converting a word from graphemes to IPA or ARPA\
+    """Internal method for converting a word from graphemes to IPA or ARPA
 
     Args:
     word: str - The English word to be converted
@@ -67,7 +63,7 @@ def _convert_word_to_phones(
     if not arpa_results:
         add_word_to_oov_file(word)
         if warn_oov:
-            warn_missing_word(word)
+            warnings.warn(f"'{word}' not found in cmudict")
         if raise_oov:
             raise ValueError(f"{word} not found in vocabulary")
         return ""

@@ -1,7 +1,6 @@
 import json
-import warnings
-import cmudict
-from .config import PATH_OOV_DICT, PATH_OOV_NEW
+
+from .config import PATH_CMU_DICT, PATH_OOV_DICT, PATH_OOV_NEW
 
 
 def read_json(fname, encoding="utf-8"):
@@ -12,10 +11,6 @@ def read_json(fname, encoding="utf-8"):
 def write_json(fname, obj, encoding="utf-8"):
     with open(fname, "w", encoding=encoding) as f:
         return json.dump(f, obj)
-
-
-def warn_missing_word(word):
-    warnings.warn(f"'{word}' not found in cmudict")
 
 
 def add_word_to_oov_file(word):
@@ -33,7 +28,7 @@ def get_oov_pronunciations():
 
 
 def load_cmu_dict():
-    cmu_dict = cmudict.dict()
+    cmu_dict = read_json(PATH_CMU_DICT)
     oov_dict = get_oov_pronunciations()
     cmu_dict_plus = {**cmu_dict, **oov_dict}
     cmu_dict_plus = {k.lower(): v for k, v in cmu_dict_plus.items()}
