@@ -1,5 +1,6 @@
 import pytest
 
+import en_to_ipa.arpa_ipa_mappings as mappings
 from en_to_ipa.build_phone_dict import load_cmu_dict
 
 
@@ -42,3 +43,22 @@ def test_ts_bug(local_cmu_dict):
     for result_list in all_results:
         for result in result_list:
             assert "TS" not in result and "ts" not in result
+
+
+def test_valid_arpabet(local_cmu_dict):
+    """Regression test to prevent typos after manually editing CMUDict"""
+    arpa_symbols = set()
+    valid_arpa = _get_valid_arpa_chars()
+    for arpa_transcriptions in local_cmu_dict.values():
+        for arpa_transcription in arpa_transcriptions:
+            arpa_symbols = arpa_symbols.union({a.lower() for a in arpa_transcription})
+    assert arpa_symbols.issubset(valid_arpa)
+
+
+def _get_valid_arpa_chars():
+    valid_arpa = set(mappings.arpa_to_ipa_dict.keys())
+    poss_intonations = []
+    for i in range(3):
+        poss_intonations.append({c + str(i) for c in valid_arpa})
+    valid_arpa = valid_arpa.union(*poss_intonations)
+    return valid_arpa
